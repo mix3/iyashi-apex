@@ -1,7 +1,6 @@
 # iyashi-apex
 
-[iyashi](https://github.com/mix3/iyashi) を API Gateway + Lambda with Apex で動かせるようにしてみた
-
+[iyashi](https://github.com/mix3/iyashi) を API Gateway + Lambda with [Apex](https://github.com/apex/apex) & [ridge](https://github.com/fujiwara/ridge) で動かせるようにしてみた
 
 ## Usage
 
