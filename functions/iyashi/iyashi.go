@@ -102,6 +102,7 @@ func (i *Iyashi) Run() {
 			log.Println(err)
 			return nil, err
 		}
+		r.ParseForm()
 		w := ridge.NewResponseWriter()
 		i.mux.ServeHTTP(w, r)
 		return w.Response(), nil

@@ -13,13 +13,13 @@ func wrapHandle(iyashi *Iyashi, next Handler) http.Handler {
 	f := func(w http.ResponseWriter, r *http.Request) {
 		ctx := Context{
 			Iyashi:      iyashi,
-			TeamDomain:  r.FormValue("team_domain"),
-			ChannelName: r.FormValue("channel_name"),
-			Timestamp:   r.FormValue("timestamp"),
-			UserID:      r.FormValue("user_id"),
-			UserName:    r.FormValue("user_name"),
-			Text:        r.FormValue("text"),
-			TriggerWord: r.FormValue("trigger_word"),
+			TeamDomain:  r.PostFormValue("team_domain"),
+			ChannelName: r.PostFormValue("channel_name"),
+			Timestamp:   r.PostFormValue("timestamp"),
+			UserID:      r.PostFormValue("user_id"),
+			UserName:    r.PostFormValue("user_name"),
+			Text:        r.PostFormValue("text"),
+			TriggerWord: r.PostFormValue("trigger_word"),
 		}
 
 		var err error
