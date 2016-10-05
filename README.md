@@ -2,6 +2,8 @@
 
 [iyashi](https://github.com/mix3/iyashi) を API Gateway + Lambda with [Apex](https://github.com/apex/apex) & [ridge](https://github.com/fujiwara/ridge) で動かせるようにしてみた
 
+<img width="700" alt="2016-10-05 11 02 16" src="https://cloud.githubusercontent.com/assets/36567/19098803/56f3e378-8aeb-11e6-8f5f-e6ab43c202e5.png">
+
 ## Usage
 
 ### API Gateway
@@ -36,4 +38,3 @@ apex deploy \
     -s TUMBLR_API_TOKEN="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
     iyashi
 ```
-
