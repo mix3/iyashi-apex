@@ -1,0 +1,10 @@
+{
+  "name": "iyashi",
+  "description": "",
+  "memory": 128,
+  "timeout": 5,
+  "role": "arn:aws:iam::804235679129:role/iyashi_lambda_function",
+  "environment": {
+    "APEX": "true"
+  }
+}
