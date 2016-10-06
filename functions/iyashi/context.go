@@ -15,6 +15,7 @@ var postMessageParameters = slack.PostMessageParameters{
 
 type Context struct {
 	Iyashi      *Iyashi
+	Token       string
 	TeamDomain  string
 	ChannelName string
 	UserID      string

@@ -13,26 +13,28 @@ import (
 )
 
 type Iyashi struct {
-	mux            *http.ServeMux
-	api            *slack.Client
-	slackBotToken  string
-	flickrApiToken string
-	tumblrApiToken string
-	host           string
-	port           string
-	joinChannelMap map[string]struct{}
-	AuthTest       *slack.AuthTestResponse
-	dispatchMap    map[string]Command
+	mux                *http.ServeMux
+	api                *slack.Client
+	slackBotToken      string
+	slackOutgoingToken string
+	flickrApiToken     string
+	tumblrApiToken     string
+	host               string
+	port               string
+	joinChannelMap     map[string]struct{}
+	AuthTest           *slack.AuthTestResponse
+	dispatchMap        map[string]Command
 }
 
 func NewIyashi() (*Iyashi, error) {
 	var (
-		slackBotToken  = os.Getenv("SLACK_BOT_TOKEN")
-		flickrApiToken = os.Getenv("FLICKR_API_TOKEN")
-		tumblrApiToken = os.Getenv("TUMBLR_API_TOKEN")
-		api            = slack.New(slackBotToken)
-		host           = os.Getenv("HOST")
-		port           = os.Getenv("PORT")
+		slackBotToken     = os.Getenv("SLACK_BOT_TOKEN")
+		slackOutgoinToken = os.Getenv("SLACK_OUTGOING_TOKEN")
+		flickrApiToken    = os.Getenv("FLICKR_API_TOKEN")
+		tumblrApiToken    = os.Getenv("TUMBLR_API_TOKEN")
+		api               = slack.New(slackBotToken)
+		host              = os.Getenv("HOST")
+		port              = os.Getenv("PORT")
 	)
 
 	if host == "" {
@@ -43,15 +45,16 @@ func NewIyashi() (*Iyashi, error) {
 	}
 
 	iyashi := &Iyashi{
-		mux:            http.NewServeMux(),
-		api:            api,
-		slackBotToken:  slackBotToken,
-		flickrApiToken: flickrApiToken,
-		tumblrApiToken: tumblrApiToken,
-		host:           host,
-		port:           port,
-		joinChannelMap: map[string]struct{}{},
-		dispatchMap:    map[string]Command{},
+		mux:                http.NewServeMux(),
+		api:                api,
+		slackBotToken:      slackBotToken,
+		slackOutgoingToken: slackOutgoinToken,
+		flickrApiToken:     flickrApiToken,
+		tumblrApiToken:     tumblrApiToken,
+		host:               host,
+		port:               port,
+		joinChannelMap:     map[string]struct{}{},
+		dispatchMap:        map[string]Command{},
 	}
 
 	authTest, err := api.AuthTest()

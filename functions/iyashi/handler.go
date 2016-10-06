@@ -11,8 +11,11 @@ type Handler func(ctx Context, w http.ResponseWriter, r *http.Request) error
 
 func wrapHandle(iyashi *Iyashi, next Handler) http.Handler {
 	f := func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "text/plain")
+
 		ctx := Context{
 			Iyashi:      iyashi,
+			Token:       r.PostFormValue("token"),
 			TeamDomain:  r.PostFormValue("team_domain"),
 			ChannelName: r.PostFormValue("channel_name"),
 			Timestamp:   r.PostFormValue("timestamp"),
@@ -22,12 +25,17 @@ func wrapHandle(iyashi *Iyashi, next Handler) http.Handler {
 			TriggerWord: r.PostFormValue("trigger_word"),
 		}
 
+		// token check
+		if iyashi.slackOutgoingToken != ctx.Token {
+			fmt.Fprintln(w, "token error")
+			return
+		}
+
 		var err error
 		if _, ok := iyashi.joinChannelMap[ctx.ChannelName]; ok {
 			err = next(ctx, w, r)
 		}
 
-		w.Header().Set("Content-Type", "text/plain")
 		if err != nil {
 			ctx.Reply(fmt.Sprintf("%v", err))
 			fmt.Fprintln(w, "ng")
