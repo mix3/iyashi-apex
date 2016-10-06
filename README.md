@@ -17,6 +17,7 @@
 ```
 apex deploy \
     -s SLACK_BOT_TOKEN="xxxx-00000000000-xxxxxxxxxxxxxxxxxxxxxxxx" \
+    -s SLACK_OUTGOING_TOKEN="xxxxxxxxxxxxxxxxxxxxxxxx" \
     -s FLICKR_API_TOKEN="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
     -s TUMBLR_API_TOKEN="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
     iyashi
