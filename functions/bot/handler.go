@@ -31,8 +31,11 @@ func wrapHandle(iyashi *Iyashi, next Handler) http.Handler {
 			return
 		}
 
+		// メンションされたチャンネルに所属している
+		// かつ、自分からのメンションではない
 		var err error
-		if _, ok := iyashi.joinChannelMap[ctx.ChannelName]; ok {
+		_, ok := iyashi.joinChannelMap[ctx.ChannelName]
+		if ok && iyashi.AuthTest.User != ctx.UserName {
 			err = next(ctx, w, r)
 		}
 
