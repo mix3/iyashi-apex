@@ -66,7 +66,7 @@ func handleRoot(ctx Context, w http.ResponseWriter, r *http.Request) error {
 	trimText := strings.Trim(strings.TrimLeft(ctx.Text, ctx.TriggerWord), " ")
 	if trimText == "" {
 		log.Println("empty command")
-		ctx.Reply("???")
+		ctx.Reply("指示ちょーだい♪ლ(´ڡ`ლ)")
 		return nil
 	}
 
@@ -75,7 +75,7 @@ func handleRoot(ctx Context, w http.ResponseWriter, r *http.Request) error {
 	cmd, ok := ctx.Iyashi.dispatchMap[words[0]]
 	if !ok {
 		log.Println("unknown command:", words[0])
-		ctx.Reply("???")
+		ctx.Reply("何言ってるかわかんないよ…(>﹏<;;)")
 		return nil
 	}
 

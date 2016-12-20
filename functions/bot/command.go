@@ -66,7 +66,7 @@ func iyashiFunc(ctx Context, cmd string, args []string) error {
 		return err
 	}
 	if len(res2.Photos.Photo) == 0 {
-		return fmt.Errorf("見つからないよ(´・ω・｀)")
+		return fmt.Errorf("見つかんないよ(´・ω・｀)")
 	}
 
 	photo := res2.Photos.Photo[rand.Intn(len(res2.Photos.Photo))]
@@ -216,7 +216,7 @@ func newTumblrCommand(token, tumblrId, command string) Command {
 			}
 
 			if len(urls) == 0 {
-				return fmt.Errorf("見つからないよ(´・ω・｀)")
+				return fmt.Errorf("見つかんないよ(´・ω・｀)")
 			}
 
 			ctx.ReplyWithoutPermalink(urls[rand.Intn(len(urls))])
