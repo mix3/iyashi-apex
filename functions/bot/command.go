@@ -39,6 +39,8 @@ func newHelpCommand() Command {
 func iyashiFunc(ctx Context, cmd string, args []string) error {
 	if len(args) == 0 {
 		args = append(args, "猫")
+	} else {
+		return fmt.Errorf("検索はもう許さないんだから！٩(๑`^´๑)۶")
 	}
 	args = append(args, "-hentai", "-porn", "-sexy", "-fuck")
 	keyword := strings.Join(args, " ")
