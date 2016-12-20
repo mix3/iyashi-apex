@@ -18,7 +18,7 @@ type Command struct {
 
 func newIyashiCommand() Command {
 	tmpl := template.Must(template.New("iyashi").Parse(
-		"`@{{ .Iyashi.AuthTest.User }} 癒やし <文言>` でflickrから画像を返すよ! 文言はスペース区切りで複数指定可",
+		"`@{{ .Iyashi.AuthTest.User }} 癒やし` でflickrから画像を返すよ!",
 	))
 	return Command{
 		Help: tmpl,
