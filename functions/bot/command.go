@@ -39,8 +39,6 @@ func newHelpCommand() Command {
 func iyashiFunc(ctx Context, cmd string, args []string) error {
 	if len(args) == 0 {
 		args = append(args, "猫")
-	} else {
-		return fmt.Errorf("検索はもう許さないんだから！٩(๑`^´๑)۶")
 	}
 	args = append(args, "-hentai", "-porn", "-sexy", "-fuck")
 	keyword := strings.Join(args, " ")
@@ -81,7 +79,8 @@ func iyashiFunc(ctx Context, cmd string, args []string) error {
 		photo.Secret,
 	)
 
-	ctx.ReplyWithoutPermalink(imgUrl)
+	ctx.DM(imgUrl)
+	ctx.ReplyWithoutPermalink("╭( ･ㅂ･)و ̑̑ DMしたよ")
 
 	return nil
 }
@@ -157,6 +156,14 @@ func flickrSearch(query map[string]string) (FlickrSearchResponse, error) {
 }
 
 // tumblr
+
+type tumblrReplyType int
+
+const (
+	TUMBLR_REPLY_TYPE_DM tumblrReplyType = iota
+	TUMBLR_REPLY_TYPE_REPLY
+)
+
 type TumblrSearchResponse struct {
 	Response struct {
 		Posts []struct {
@@ -170,13 +177,14 @@ type TumblrSearchResponse struct {
 	} `json:"response"`
 }
 
-func tumblrSearch(token, tumblrId string, offset int) (TumblrSearchResponse, error) {
+func tumblrSearch(token, tumblrId string, tag []string, offset int) (TumblrSearchResponse, error) {
 	var res TumblrSearchResponse
 	url := fmt.Sprintf(
-		"http://api.tumblr.com/v2/blog/%s.tumblr.com/posts/photo?api_key=%s&offset=%d",
+		"http://api.tumblr.com/v2/blog/%s.tumblr.com/posts/photo?api_key=%s&offset=%d&tag=%s",
 		tumblrId,
 		token,
 		offset,
+		strings.Join(tag, "+"),
 	)
 	resp, err := http.Get(url)
 	if err != nil {
@@ -191,21 +199,21 @@ func tumblrSearch(token, tumblrId string, offset int) (TumblrSearchResponse, err
 	return res, nil
 }
 
-func newTumblrCommand(token, tumblrId, command string) Command {
+func newTumblrCommand(token string, replyType tumblrReplyType, tumblrId string, tag []string, command string) Command {
 	tmpl := template.Must(template.New(command).Parse(
 		fmt.Sprintf("`@{{ .Iyashi.AuthTest.User }} %s` で http://%s.tumblr.com/ から画像をランダムで返すよ", command, tumblrId),
 	))
 	return Command{
 		Help: tmpl,
 		Func: func(ctx Context, cmd string, args []string) error {
-			res1, err := tumblrSearch(token, tumblrId, 0)
+			res1, err := tumblrSearch(token, tumblrId, tag, 0)
 			if err != nil {
 				return err
 			}
 
 			offset := rand.Intn(res1.Response.TotalPosts/20+1) * 20
 
-			res2, err := tumblrSearch(token, tumblrId, offset)
+			res2, err := tumblrSearch(token, tumblrId, tag, offset)
 			if err != nil {
 				return err
 			}
@@ -221,7 +229,13 @@ func newTumblrCommand(token, tumblrId, command string) Command {
 				return fmt.Errorf("見つかんないよ(´・ω・｀)")
 			}
 
-			ctx.ReplyWithoutPermalink(urls[rand.Intn(len(urls))])
+			switch replyType {
+			case TUMBLR_REPLY_TYPE_DM:
+				ctx.DM(urls[rand.Intn(len(urls))])
+				ctx.ReplyWithoutPermalink("╭( ･ㅂ･)و ̑̑ DMしたよ")
+			case TUMBLR_REPLY_TYPE_REPLY:
+				ctx.ReplyWithoutPermalink(urls[rand.Intn(len(urls))])
+			}
 
 			return nil
 		},

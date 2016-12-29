@@ -25,6 +25,14 @@ type Context struct {
 	TriggerWord string
 }
 
+func (c Context) DM(text string) {
+	c.Iyashi.api.PostMessage(
+		fmt.Sprintf("@%s", c.UserName),
+		fmt.Sprintf("<@%s> %s", c.UserID, text),
+		postMessageParameters,
+	)
+}
+
 func (c Context) Reply(text string) {
 	c.Iyashi.api.PostMessage(
 		c.ChannelName,

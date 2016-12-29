@@ -77,16 +77,16 @@ func NewIyashi() (*Iyashi, error) {
 
 	var (
 		iyashiCommand = newIyashiCommand()
-		//moeCommand    = newTumblrCommand(tumblrApiToken, "honobonoarc", "萌え")
-		zoiCommand = newTumblrCommand(tumblrApiToken, "ganbaruzoi", "ぞい")
-		//tawawaCommand = newTumblrCommand(tumblrApiToken, "tawawa-of-monday", "たわわ")
-		helpCommand = newHelpCommand()
+		moeCommand    = newTumblrCommand(tumblrApiToken, TUMBLR_REPLY_TYPE_DM, "honobonoarc", []string{}, "萌え")
+		zoiCommand    = newTumblrCommand(tumblrApiToken, TUMBLR_REPLY_TYPE_REPLY, "ganbaruzoi", []string{}, "ぞい")
+		tawawaCommand = newTumblrCommand(tumblrApiToken, TUMBLR_REPLY_TYPE_REPLY, "tawawa-of-monday", []string{"safe"}, "たわわ")
+		helpCommand   = newHelpCommand()
 	)
 	iyashi.dispatchMap = map[string]Command{
-		"癒やし": iyashiCommand,
-		//"萌え":   moeCommand,
-		"ぞい": zoiCommand,
-		//"たわわ":  tawawaCommand,
+		"癒やし":  iyashiCommand,
+		"萌え":   moeCommand,
+		"ぞい":   zoiCommand,
+		"たわわ":  tawawaCommand,
 		"help": helpCommand,
 	}
 
