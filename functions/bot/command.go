@@ -206,12 +206,14 @@ func newTumblrCommand(token string, replyType tumblrReplyType, tumblrId string, 
 	return Command{
 		Help: tmpl,
 		Func: func(ctx Context, cmd string, args []string) error {
+			limit := 20
+
 			res1, err := tumblrSearch(token, tumblrId, tag, 0)
 			if err != nil {
 				return err
 			}
 
-			offset := rand.Intn(res1.Response.TotalPosts/20+1) * 20
+			offset := rand.Intn(res1.Response.TotalPosts - limit + 1)
 
 			res2, err := tumblrSearch(token, tumblrId, tag, offset)
 			if err != nil {
