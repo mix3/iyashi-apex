@@ -1,13 +1,10 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 
-	"github.com/apex/go-apex"
 	"github.com/fujiwara/ridge"
 	"github.com/nlopes/slack"
 )
@@ -96,20 +93,5 @@ func NewIyashi() (*Iyashi, error) {
 }
 
 func (i *Iyashi) Run() {
-	if os.Getenv("APEX") == "" {
-		addr := fmt.Sprintf("%s:%s", i.host, i.port)
-		log.Println("starting up with local httpd: ", addr)
-		log.Fatal(http.ListenAndServe(addr, i.mux))
-	}
-	apex.HandleFunc(func(event json.RawMessage, ctx *apex.Context) (interface{}, error) {
-		r, err := ridge.NewRequest(event)
-		if err != nil {
-			log.Println(err)
-			return nil, err
-		}
-		r.ParseForm()
-		w := ridge.NewResponseWriter()
-		i.mux.ServeHTTP(w, r)
-		return w.Response(), nil
-	})
+	ridge.Run(fmt.Sprintf("%s:%s", i.host, i.port), "", i.mux)
 }
