@@ -21,6 +21,7 @@ type Iyashi struct {
 	joinChannelMap     map[string]struct{}
 	AuthTest           *slack.AuthTestResponse
 	dispatchMap        map[string]Command
+	ld                 LevenshteinDistance
 }
 
 func NewIyashi() (*Iyashi, error) {
@@ -52,6 +53,7 @@ func NewIyashi() (*Iyashi, error) {
 		port:               port,
 		joinChannelMap:     map[string]struct{}{},
 		dispatchMap:        map[string]Command{},
+		ld:                 LevenshteinDistance{},
 	}
 
 	authTest, err := api.AuthTest()

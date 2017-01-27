@@ -74,8 +74,16 @@ func handleRoot(ctx Context, w http.ResponseWriter, r *http.Request) error {
 
 	cmd, ok := ctx.Iyashi.dispatchMap[words[0]]
 	if !ok {
+		eMess := "何言ってるかわかんないよ…(>﹏<;;)"
+		for k, _ := range ctx.Iyashi.dispatchMap {
+			if ctx.Iyashi.ld.Distance(words[0], k) <= 1 {
+				eMess = fmt.Sprintf("もしかして `%s` の間違い？(･ω･｀)", k)
+				break
+			}
+		}
+
 		log.Println("unknown command:", words[0])
-		ctx.Reply("何言ってるかわかんないよ…(>﹏<;;)")
+		ctx.Reply(eMess)
 		return nil
 	}
 
