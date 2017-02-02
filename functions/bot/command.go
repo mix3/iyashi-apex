@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"log"
 	"math/rand"
 	"net/http"
 	"net/url"
@@ -36,9 +37,22 @@ func newHelpCommand() Command {
 	}
 }
 
+var (
+	defaultWords = []string{
+		"猫", "ねこ",
+		"犬", "いぬ",
+		"兎", "うさぎ",
+		"鳥", "とり",
+		"ハムスター",
+		"パンダ",
+		"日本酒",
+	}
+	limitPageNum = 40
+)
+
 func iyashiFunc(ctx Context, cmd string, args []string) error {
 	if len(args) == 0 {
-		args = append(args, "猫")
+		args = append(args, defaultWords[rand.Intn(len(defaultWords))])
 	}
 	args = append(args, "-hentai", "-porn", "-sexy", "-fuck")
 	keyword := strings.Join(args, " ")
@@ -57,7 +71,12 @@ func iyashiFunc(ctx Context, cmd string, args []string) error {
 	if err != nil {
 		return err
 	}
-	page := rand.Intn(res1.Photos.Pages) + 1
+
+	pageRange := res1.Photos.Pages
+	if limitPageNum < pageRange {
+		pageRange = limitPageNum
+	}
+	page := rand.Intn(pageRange) + 1
 
 	res2, err := flickrSearch(merge(query, map[string]string{
 		"page": fmt.Sprintf("%d", page),
@@ -66,6 +85,7 @@ func iyashiFunc(ctx Context, cmd string, args []string) error {
 		return err
 	}
 	if len(res2.Photos.Photo) == 0 {
+		log.Println(keyword)
 		return fmt.Errorf("見つかんないよ(´・ω・｀)")
 	}
 
